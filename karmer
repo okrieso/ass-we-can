@@ -1,0 +1,450 @@
+
+#include <stdio.h>
+#include <malloc.h>
+#include <stdlib.h>
+
+
+	//ïå÷àòü
+void pechat (double **a,double *b,int n1)
+{
+ int i,j;
+	printf("\n");
+	
+	for (i=0;i<n1;i++)
+{
+	j=0;
+	printf("%lf",a[i][j]);
+	printf("*x%d",j+1);
+	for (j=1;j<n1;j++)
+{
+	printf("+%lf",a[i][j]);
+	printf("*x%d",j+1);	
+}
+	printf("=%lf ", b[i]);
+	printf("\n\n");	
+}
+}
+	//ïå÷àòü
+void pechat2 (double **c,int n1)
+{
+ int i,j;
+	printf("\n");
+	
+	for (i=0;i<n1;i++)
+{
+	j=0;
+	printf("%lf",c[i][j]);
+	printf("*x%d",j+1);
+	for (j=1;j<n1;j++)
+{
+	printf("+%lf",c[i][j]);
+	printf("*x%d",j+1);	
+
+}
+	printf("\n");
+}
+}
+
+
+void pechatx (double *detx,int n2)
+{
+	int i;
+	for (i=0;i<n2;i++)
+	{
+	
+	printf("x%d",i);
+	printf("=%lf ",detx[i]);
+	}
+}
+//ïîèñê ìàêñ êîë-âà íóëåé â ñòðîêå
+int zero_str (double **c,int n1,double &f)
+{
+	int i,j,k,max=0,s=-1;
+	for (i=0;i<n1;i++)
+	{
+	k=0;
+		for(j=0;j<n1;j++)
+		{
+			if (c[i][j]==0)
+				k++;
+		}
+		if (max<k)
+		{
+		max=k;
+		s=i;
+		}
+	}
+	f=max;
+			printf("\n zero max str nomer %d =%d",s,max);
+	return s;
+}
+//ïîèñê ìàêñ êîë-âà íóëåé â ñòîëáöå
+int zero_stolb (double **c,int n1,double &f)
+{
+
+	int i,j,k,max=0,s=-1;	
+	for (j=0;j<n1;j++)
+	{
+	k=0;
+		for(i=0;i<n1;i++)
+		{
+			if (c[i][j]==0)
+			k++;
+		}
+		if (max<k)
+			{
+			max=k;
+			s=j;
+			}
+	}
+		printf("\n zero max stolb nomer %d =%d",s,max);
+	if(max<f)
+	return -1;
+	return s;
+}
+//ïîèñê ìèíèìàëüíîé ñóììû â ñòðîêå
+int min_str (double **c,int n1,double &f)
+{
+	int i=0,j,k=0,p;
+	double s=0,min;
+	for (j=0;j<n1;j++)
+	s+=c[i][j];
+	min=s;
+	p=i;
+	for (i=1;i<n1;i++)
+	{
+		s=0;
+		for(j=0;j<n1;j++)
+		{
+			s+=c[i][j];
+		}
+		if (min>s)
+		{
+		min=s;
+		p=i;
+		}
+	}
+		printf("\nminstr  %d=%lf",p,min);
+	f=min;
+	return p;
+}
+	//ïîèñê ìèíèìàëüíîé ñóììû â ñòîëáöå
+	int min_stolb (double **c,int n1,double &f)
+{
+	int i,j=0,k=0,p;
+	double s=0,min;
+	for (i=0;i<n1;i++)
+	s+=c[i][j];
+	min=s;
+	p=j;
+	for (j=1;j<n1;j++)
+	{
+		s=0;
+		for(i=0;i<n1;i++)
+		{
+			s+=c[i][j];
+		}
+		if (min>s)
+		{
+		min=s;
+		p=j;
+		}
+	}
+		printf("\nmin stolb %d=%lf",p,min);
+		if (min>f)
+		return -1;
+	return p;
+}
+
+int min_elem (double **c,int n1,int p,int i)//ïîèñê ìèíèìàëüíîãî ýëåìåíòà â ñòðîêå/ñòîëáöå
+{
+	int k,j;
+	double min;
+	if (p==-1)
+	{
+		for(k=0;k<n1;k++)
+		if(c[i][k]!=0)
+	{
+	min=c[i][k];
+	j=k;
+	break;
+	}
+		for (k=1;k<n1;k++)
+		{
+		
+			if (min >c[i][k] && c[i][k]!=0)
+			{
+				j=k;
+				min=c[i][k];
+			}
+	}
+	printf("\nmin elem nomer %d %d=%lf",i,j,min);
+	}
+	else
+	{
+		for(k=0;k<n1;k++)
+		if(c[k][i]!=0)
+	{		
+	min=c[k][i];
+	j=k;
+	break;
+	}
+		for (k=1;k<n1;k++)
+			if (min>c[k][i] && c[k][i]!=0)
+			{
+				j=k;
+				min=c[k][i];
+				
+			}
+		printf("\nmin elem nomer %d %d=%lf",j,i,min);
+	}
+	return j;
+}
+
+double obnulenie (double **c ,int n1,int i,int p,int nom ) //îáíóëåíèå ñòðîêè èëè ñòîëáöà è çàïîìèíàíèå çíà÷åíèÿ íå îáíóëåííîãî ýëåìåíòà
+{
+	int k,j;
+	double det1,det2,det=1;
+			det1=c[i][nom];
+			if(det1==0)
+			return 0;
+			printf("det1=%lf",det1);
+			printf ("\np=%d\n",p);
+	if(p==-1)
+	{
+		for (k=0;k<n1;k++)
+		{
+			if(k==nom)
+			continue;
+			if (c[i][k]==0)
+			continue;
+		det2=c[i][k];
+		printf("\n\nDETX2=%lf",det2);//âñòàâèòü ìåõàíèçì ïîèñêà îáùåãî êðàòíîãî
+		det*=det1;
+		for (j=0;j<n1;j++)
+		c[j][k]=c[j][k]*det1-c[j][nom]*det2;
+		pechat2 (c,n1);
+		}
+
+
+	}
+	if(p==1)
+	{
+		for (k=0;k<n1;k++)
+		{
+			if(k==i)
+			continue;
+			if (c[k][nom]==0)
+			continue;
+			det2=c[k][nom];
+			printf("\n\nDETX2=%lf",det2);
+			det*=det1;
+		for(j=0;j<n1;j++)
+			c[k][j]=c[k][j]*det1-c[i][j]*det2;
+					pechat2(c,n1);
+		}
+	}
+		det/=det1;
+		i+=nom;
+		if (i%2!=0)
+		det*=-1;	
+		return det;
+}
+
+//ïîëó÷åíèå íîâîé ìàòðèöû íà ñòåïåíü íèæå
+void izminenie (int n1,int i,int nom,double **c)
+{
+	int k,m;
+	for (k=0;k<i;k++)
+	{
+		for (m=0;m<nom;m++)
+		c[k][m]=c[k][m];
+		for(m=nom+1;m<n1;m++)
+		c[k][m-1]=c[k][m];
+		
+	}
+		for (k=i+1;k<n1;k++)
+	{
+		for (m=0;m<nom;m++)
+		c[k-1][m]=c[k][m];
+		for(m=nom+1;m<n1;m++)
+		c[k-1][m-1]=c[k][m];
+	}
+}
+	//öèêë ïðåîáðàçîâàíèÿ
+double	ponizh_stepeni (int n1,double det,double **c)
+{
+	double *f,f1=0;
+	f=&f1;
+	int i=-1,j=-1,p,nom;
+	i=zero_str(c,n1,*f);
+	j=zero_stolb(c,n1,*f);
+	if(i==-1 && j==-1)
+	{
+	i=min_str(c,n1,*f);
+	j=min_stolb(c,n1,*f);
+	
+	if (j==-1) //ïî ñòðîêå ðàáîòàåì 
+	{
+	p=-1;
+	nom=min_elem(c,n1,p,i); 
+	det*=obnulenie (c,n1,i,p,nom);
+	izminenie (n1,i,nom,c);
+	}
+	else//ïî ñòîëáöó ðàáîòàåì
+	{
+	p=1;
+	nom=min_elem(c,n1,p,j);
+	det*=obnulenie (c,n1,j,p,nom);
+	p=j;
+	j=nom;
+	nom=p;
+	izminenie(n1,j,nom,c);
+	}
+	}
+	else
+	{
+	if (j==-1) //ïî ñòðîêå ðàáîòàåì 
+	{	
+	p=-1;
+	nom=min_elem(c,n1,p,i); 
+	det*=obnulenie (c,n1,i,p,nom);
+	izminenie (n1,i,nom,c);
+	}
+	else//ïî ñòîëáöó ðàáîòàåì
+	{
+	p=1;
+	nom=min_elem(c,n1,p,j);
+	det*=obnulenie (c,n1,j,p,nom);
+	p=j;
+	j=nom;
+	nom=p;
+	izminenie(n1,j,nom,c);
+	}
+	}
+	return (det);
+}
+
+double opredn2 (double det,double **c)
+{
+	double det1;
+	det1=(c[0][0]*c[1][1]-c[0][1]*c[1][0])/det;
+	return det1;
+}
+
+double alg (double **a,double *b,double **c,int &n1,int n2,int i)
+{
+int k,j ;
+n1=n2;
+double det=1,itogdet;
+for (k=0;k<n2;k++)
+for (j=0;j<n2;j++)
+c[k][j]=a[k][j];
+
+if(i>=0)
+for(j=0;j<n2;j++)
+c[j][i]=b[j];
+while(n1>2)
+{
+	pechat2(c,n1);
+ det*=ponizh_stepeni(n1,det,c);
+ n1--;
+ 	pechat2(c,n1);
+}
+printf("\nZAPASdet[%d]=%lf\n",i+1,det);
+if (det==0)
+return 0;
+itogdet=opredn2(det,c);
+printf("\nITOGDET[%d]=%lf\n",i+1,itogdet);
+return itogdet;
+}
+
+int main ()
+{
+	double **a;
+	double *b;
+	double det;
+	double **c;
+	double *detx;
+	double detx0;
+	int i,j,n,p,nom;
+	int *n1;
+	int n2;
+		n1=&n;
+//ðàçìåðíîñòü ìàññèâà n
+	printf ("n=");  
+	scanf("%d",&n2);
+	printf("\n");
+	n=n2;
+//ìàññññèâ êîýôôèöèýíòîâ
+	a = (double**)malloc(n * sizeof(double));
+	 for (i = 0; i<n; i++)  
+  {
+  	a[i] = (double*)malloc(n * sizeof(double));
+    for (j = 0; j<n; j++)  
+    {
+      printf("a[%d][%d] = ", i+1, j+1);
+      scanf("%lf", &a[i][j]);
+    }
+  }
+ //ìàññèâ çíà÷åíèé
+	b = (double*)malloc(n *sizeof(double));	
+	for (i = 0; i<n; i++)
+  {
+    printf("b(%d) = ", i+1);
+    scanf("%lf", &b[i]);
+  }
+//ìàññèâ c
+	c = (double**)malloc(n * sizeof(double));
+	for (i = 0; i<n; i++)  
+	{
+	c[i] = (double*)malloc(n * sizeof(double));
+	}
+//ìàññèâ äåò-îâ è èêñîâ 
+	n++;
+	detx = (double*)malloc(n *sizeof(double));	
+	for (i = 0; i<=n; i++)
+  {
+	detx[i]=1;
+  }
+  n--;
+//ïå÷àòü
+ pechat(a,b,*n1);
+ //àëãîðèòì
+i=0;
+detx0=alg(a,b,c,*n1,n2,i-1);
+printf("\ndetxNULEVOY=%lf\n",detx0);
+if (detx0!=0)
+{
+
+for(i=0;i<n2;i++)
+{
+	printf("\n IRAVNDO===%d",i);
+	detx[i]=alg(a,b,c,*n1,n2,i);
+	detx[i]=detx[i]/detx0;
+	printf("\ndetx[%d]=%lf",i+1,detx[i]);
+}
+pechatx(detx,n2);
+
+}
+else
+{
+	j=-1;
+	for (i=0;i<n2+1;i++)
+	{
+	printf("\n IRAVNDO===%d",i);
+	detx[i]=alg(a,b,c,*n1,n2,i);
+	printf("\ndetx[%d]=%lf",i+1,detx[i]);
+	if (detx[i]!=0)
+	j=1;
+	}
+	if(j==1)
+	printf("\nnet korney");
+	else
+	printf("\nbeskonechnost'korney'");
+}
+
+free(a);
+free(b);
+free(c);
+}
